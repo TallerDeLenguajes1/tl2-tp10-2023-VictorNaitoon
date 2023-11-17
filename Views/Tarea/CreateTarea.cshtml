@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Crear Tarea";
+}
+
+@model Tarea
+
+<form asp-controller="Tarea" asp-action="CreateTarea">
+    <div class="form-group">
+        <label asp-for="@Model.IdTablero">ID Tablero</label>
+        <input asp-for="@Model.IdTablero" class="form-control" required/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Nombre">Nombre de la tarea</label>
+        <input asp-for="@Model.Nombre" class="form-control" required/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Descripcion">Descripcion</label>
+        <input asp-for="@Model.Descripcion" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Estado">Estado</label>
+        <input asp-for="@Model.Estado" class="form-control" required/>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Color">Color</label>
+        <input asp-for="@Model.Color" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.IdUsuarioAsignado">ID Usuario Asignado</label>
+        <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>

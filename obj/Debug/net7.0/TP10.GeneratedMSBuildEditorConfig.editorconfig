@@ -1,0 +1,81 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = TP10
+build_property.RootNamespace = TP10
+build_property.ProjectDir = C:\Users\Victo\Desktop\TallerII-2023\TP10\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Victo\Desktop\TallerII-2023\TP10
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tablero/CreateTablero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xDcmVhdGVUYWJsZXJvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tablero/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tablero/UpdateTablero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFibGVyb1xVcGRhdGVUYWJsZXJvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tarea/CreateTarea.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcQ3JlYXRlVGFyZWEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tarea/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Tarea/UpdateTarea.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWFcVXBkYXRlVGFyZWEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Usuario/CreateUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhdGVVc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Usuario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Usuario/UpdateUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xVcGRhdGVVc3VhcmlvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Victo/Desktop/TallerII-2023/TP10/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-omil5lzfrd
