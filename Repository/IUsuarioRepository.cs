@@ -13,5 +13,6 @@ namespace TP10.Repository
         public List<Usuario> GetAllUsuarios();
         public Usuario GetUsuario(int idUsuario);
         public void DeleteUsuario(int idUsuario);
+        public Usuario AutenticarUsuario(string nombre, string contrasenia);
     }
 }
