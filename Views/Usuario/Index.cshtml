@@ -1,8 +1,8 @@
 @{
     ViewData["Title"] = "Usuarios";
 }
-
-@model List<Usuario>
+@using TP10.ViewModels
+@model ListarUsuariosViewModels
 
 <h2>Listado de Usuarios</h2>
 
@@ -11,25 +11,38 @@
         <tr>
             <th hidden>ID</th>
             <th>Nombre</th>
+            <th hidden>Contraseña</th>
+            <th>Rol</th>
+            @if(Model.EsAdministrador)
+            {
             <th></th>
+            }
         </tr>
     </thead>
     <tbody>
-        @foreach (var usuario in Model)
+        @foreach (var usuario in Model.Usuarios)
         {
             <tr>
                 <td hidden>@usuario.Id</td>
                 <td>@usuario.NombreDeUsuario</td>
+                <td hidden>@usuario.Contrasenia</td>
+                <td>@usuario.Rol</td>
+                @if(Model.EsAdministrador)
+                {
                 <td>
                     <a asp-controller="Usuario" asp-action="UpdateUsuario" asp-route-idUsuario="@usuario.Id">Editar</a>
                     <a asp-controller="Usuario" asp-action="DeleteUsuario" asp-route-idUsuario="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>                      
                 </td>
+                }
             </tr>
         }
     </tbody>
 </table>
 
-<a href="CreateUsuario" class="btn btn-primary">Crear Nuevo Usuario</a>
+@if(Model.EsAdministrador)
+{
+    <a href="CreateUsuario" class="btn btn-primary">Crear Nuevo Usuario</a>
+}
 
 
 
