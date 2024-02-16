@@ -1,25 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var isLogin = Context.Session != null && Context.Session.Keys.Any();
+    var usuario = Context.Session.GetString("NombreDeUsuario");
 }
 
-@model List<Usuario>
-
-<h2>Listado de Usuarios</h2>
-
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th hidden>ID</th>
-            <th>Nombre</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model)
-        {
-            <tr>
-                <td hidden>@usuario.Id</td>
-                <td>@usuario.NombreDeUsuario</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2>Bienvenido/a @if(isLogin){@usuario;} </h2>

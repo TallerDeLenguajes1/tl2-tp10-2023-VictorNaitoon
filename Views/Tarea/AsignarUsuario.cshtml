@@ -1,0 +1,19 @@
+@{ 
+    ViewData["Title"] = "Asignar Usuario";
+}
+
+@using TP10.ViewModels;
+@model AsignarUsuarioViewModel;
+
+<form asp-controller="Tarea" asp-action="AsignarUsuario">
+    <input hidden asp-for = "@Model.IdTarea">
+    <div class="form-group">
+        <label for="usuario">Elegir Usuario</label>
+        <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
+            <option value="">Seleccionar Usuario</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Asignar</button>
+</form>
+
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}

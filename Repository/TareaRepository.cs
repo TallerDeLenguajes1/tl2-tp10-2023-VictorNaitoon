@@ -9,11 +9,16 @@ namespace TP10.Repository
 {
     public class TareaRepository : ITareaRepository
     {
-        private string cadenaConexion = "Data Source=DB/kanban.db;Cache=Shared";
+        private string _cadenaConexion;
+
+        public TareaRepository(string CadenaDeConexion)
+        {
+            _cadenaConexion = CadenaDeConexion;
+        }
 
         public void AsignarUsuarioATarea(int idUsuario, int idTarea)
         {
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -32,7 +37,7 @@ namespace TP10.Repository
         {
             var query = $"INSERT INTO tarea (id_tablero, nombre, estado, descripcion, color, id_usuario_asignado) VALUES (@idTablero, @nombre, @estado, @descripcion, @color, @idUsuarioPropietario)";
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -55,7 +60,7 @@ namespace TP10.Repository
 
         public void Delete(int idTarea)
         {
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -73,7 +78,7 @@ namespace TP10.Repository
         {
             Tarea tarea = new Tarea();
 
-            using(SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using(SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -106,7 +111,7 @@ namespace TP10.Repository
         {
             List<Tarea> tareas = new List<Tarea>();
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -143,7 +148,7 @@ namespace TP10.Repository
         {
             List<Tarea> tareas = new List<Tarea>();
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -175,7 +180,7 @@ namespace TP10.Repository
 
         public void Update(int idTarea, Tarea tarea)
         {
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -201,7 +206,7 @@ namespace TP10.Repository
         {
             List<Tarea> tareas = new List<Tarea>();
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 

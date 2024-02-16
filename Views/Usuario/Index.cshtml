@@ -30,8 +30,8 @@
                 @if(Model.EsAdministrador)
                 {
                 <td>
-                    <a asp-controller="Usuario" asp-action="UpdateUsuario" asp-route-idUsuario="@usuario.Id">Editar</a>
-                    <a asp-controller="Usuario" asp-action="DeleteUsuario" asp-route-idUsuario="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>                      
+                    <a asp-controller="Usuario" asp-action="UpdateUsuario" asp-route-idUsuario="@usuario.Id" class="btn btn-success">Editar</a>
+                    <a asp-controller="Usuario" asp-action="DeleteUsuario" asp-route-idUsuario="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>                      
                 </td>
                 }
             </tr>

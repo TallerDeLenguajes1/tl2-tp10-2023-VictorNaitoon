@@ -1,23 +1,26 @@
 @{
     ViewData["Title"] = "Crear Tablero";
 }
-
-@model Tablero
+@using TP10.ViewModels
+@model AñadirTableroViewModel
 
 <form asp-controller="Tablero" asp-action="CreateTablero">
     <div class="form-group">
         <label asp-for="@Model.IdUsuarioPropietario">ID Usuario Propietario</label>
         <input asp-for="@Model.IdUsuarioPropietario" class="form-control" required/>
+        <span asp-validation-for="@Model.IdUsuarioPropietario" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre del tablero</label>
         <input asp-for="@Model.Nombre" class="form-control" required/>
+        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Descripcion">Descripcion</label>
         <input asp-for="@Model.Descripcion" class="form-control" />
+        <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Crear</button>

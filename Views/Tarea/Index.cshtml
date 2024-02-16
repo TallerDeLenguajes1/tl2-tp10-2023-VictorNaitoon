@@ -1,8 +1,10 @@
 @{
     ViewData["Title"] = "Tareas";
+    var rol = Context.Session.GetString("Rol");
+    var Usuario = Context.Session.GetString("NombreDeUsuario").ToLower();
 }
-
-@model List<Tarea>
+@using TP10.ViewModels
+@model List<ListarTareasViewModel>
 
 <h2>Listado de las tareas</h2>
 
@@ -10,12 +12,17 @@
     <thead>
         <tr>
             <th hidden>ID</th>
-            <th>ID Tablero</th>
+            <th>Tablero al que pertence</th>
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Color</th>
             <th>Estado</th>
-            <th>ID Usuario Asignado</th>
+            <th>Usuario Asignado</th>
+            <th></th>
+            @if(rol == "Administrador")
+            {
+                <th></th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -24,19 +31,36 @@
         {
             <tr>
                 <td hidden>@tarea.IdTarea</td>
-                <td>@tarea.IdTablero</td>
+                <td>@tarea.TableroAlQuePertenece</td>
                 <td>@tarea.Nombre</td>
                 <td>@tarea.Descripcion</td>
                 <td>@tarea.Color</td>
                 <td>@tarea.Estado</td>
-                <td>@tarea.IdUsuarioAsignado</td>
-                <td>
-                    <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea">Editar</a>
-                    <a asp-controller="Tarea" asp-action="DeleteTarea" asp-route-idTarea="@tarea.IdTarea" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')">Eliminar</a>                      
-                </td>
+                <td>@tarea.UsuarioAsignado</td>
+                @if(Usuario == tarea.UsuarioAsignado.ToLower())
+                {
+                    <td>
+                        <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Editar</a>
+                    </td>
+                }
+                @if(rol == "Administrador")
+                {
+                    <td>
+                        <a asp-controller="Tarea" asp-action="DeleteTarea" asp-route-idTarea="@tarea.IdTarea" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>
+                    </td>
+                }
+                @if(rol == "Administrador" && Usuario == tarea.UsuarioAsignado.ToLower())
+                {
+                    <td>
+                        <a asp-controller="Tarea" asp-action="AsignarUsuario" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Asignar</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>
 </table>
 
-<a href="CreateTarea" class="btn btn-primary">Crear Nueva Tarea</a>
+@if(rol == "Administrador")
+{
+    <a href="CreateTarea" class="btn btn-primary">Crear Nueva Tarea</a>
+}

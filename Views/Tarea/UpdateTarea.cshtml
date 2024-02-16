@@ -1,37 +1,45 @@
-@model Tarea
+@using TP10.ViewModels
+@model ModificarTareaViewModel
 
 <form asp-controller="Tarea" asp-action="UpdateTarea">
     <input hidden asp-for="@Model.IdTarea">
 
     <div class="form-group">
         <label asp-for="@Model.IdTablero">ID Tablero</label>
-        <input asp-for="@Model.IdTablero" class="form-control" />
+        <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control" readonly>
+            <option value="">Seleccionar Tablero</option>
+        </select>
+        <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Nombre">Nombre</label>
-        <input asp-for="@Model.Nombre" class="form-control" />
+        <input asp-for="@Model.Nombre" class="form-control" readonly/>
+        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Descripcion">Descripcion</label>
-        <input asp-for="@Model.Descripcion" class="form-control" />
+        <input asp-for="@Model.Descripcion" class="form-control" readonly/>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Estado">Estado</label>
-        <input asp-for="@Model.Estado" class="form-control" />
+        <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
+        <span asp-validation-for="@Model.Estado" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.Color">Color</label>
-        <input asp-for="@Model.Color" class="form-control" />
+        <input asp-for="@Model.Color" class="form-control" readonly/>
     </div>
 
     <div class="form-group">
         <label asp-for="@Model.IdUsuarioAsignado">ID Usuario Asignado</label>
-        <input asp-for="@Model.IdUsuarioAsignado" class="form-control" />
+        <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control" readonly>
+            <option value="">Seleccionar Usuario</option>
+        </select>
     </div>
 
-    <button type="submit">Actualizar</button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
 </form>

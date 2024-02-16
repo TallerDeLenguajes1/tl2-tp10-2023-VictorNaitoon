@@ -9,13 +9,18 @@ namespace TP10.Repository
 {
     public class TableroRepository : ITableroRepository
     {
-        private string cadenaConexion = "Data Source=DB/kanban.db;Cache=Shared";
+        private string _cadenaConexion;
+
+        public TableroRepository(string CadenaDeConexion)
+        {
+            _cadenaConexion = CadenaDeConexion;
+        }
 
         public void Create(Tablero tablero)
         {
             var query = $"INSERT INTO tablero (id_usuario_propietario, nombre, descripcion) VALUES (@idUsuarioPropietario, @nombre, @descripcion)";
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -33,7 +38,7 @@ namespace TP10.Repository
 
         public void Delete(int idTablero)
         {
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -52,7 +57,7 @@ namespace TP10.Repository
         {
             Tablero tablero = new Tablero();
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -81,7 +86,7 @@ namespace TP10.Repository
             List<Tablero> tableros = new List<Tablero>();
             var query = $"SELECT * FROM tablero";
 
-            using(SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using(SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -112,7 +117,7 @@ namespace TP10.Repository
         {
             List<Tablero> tableros = new List<Tablero>();
 
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
@@ -143,7 +148,7 @@ namespace TP10.Repository
 
         public void Update(int idTablero, Tablero tablero)
         {
-            using (SQLiteConnection conexion = new SQLiteConnection(cadenaConexion))
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 

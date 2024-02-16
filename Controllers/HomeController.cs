@@ -8,17 +8,15 @@ namespace TP10.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private IUsuarioRepository _repository;
 
     public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _repository = new UsuarioRepository();
     }
 
     public IActionResult Index()
     {
-        return View(_repository.GetAllUsuarios());
+        return View();
     }
 
     public IActionResult Privacy()
