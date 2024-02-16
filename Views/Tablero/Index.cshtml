@@ -40,5 +40,7 @@
         }
     </tbody>
 </table>
-
-<a href="CreateTablero" class="btn btn-primary">Crear Nuevo Tablero</a>
+@if(usuario == "Administrador")
+{
+    <a href="CreateTablero" class="btn btn-primary">Crear Nuevo Tablero</a>
+}

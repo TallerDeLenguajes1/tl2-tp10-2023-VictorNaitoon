@@ -141,7 +141,7 @@ namespace TP10.Repository
                 conexion.Open();
 
                 SQLiteCommand command = conexion.CreateCommand();
-                command.CommandText = "SELECT * FROM usuario WHERE nombre_de_usuario COLLATE NOCASE = @nombre AND contrasenia = @contrasenia";
+                command.CommandText = "SELECT * FROM usuario WHERE nombre_de_usuario COLLATE NOCASE = @nombre OR contrasenia = @contrasenia";
 
                 command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
                 command.Parameters.Add(new SQLiteParameter("@contrasenia", contrasenia));

@@ -57,7 +57,7 @@ namespace TP10.Controllers
         {
             try
             {  
-                if(isLogin())
+                if(isLogin() && isAdmin())
                 {
                     return View(new AñadirTableroViewModel());
                 } 

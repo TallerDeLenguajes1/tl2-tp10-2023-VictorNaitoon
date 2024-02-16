@@ -108,9 +108,13 @@ namespace TP10.Controllers
                     var tableros = _tableroRepositorio.GetAll();
                     var tareaAModificar = _repository.Get(idTarea);
 
-                    var modificarTareaVM = new ModificarTareaViewModel(tareaAModificar, tableros, usuarios);
+                    if(tareaAModificar.IdUsuarioAsignado == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                    {
+                        var modificarTareaVM = new ModificarTareaViewModel(tareaAModificar, tableros, usuarios);
 
-                    return View(modificarTareaVM);
+                        return View(modificarTareaVM);
+                    }
+                    return RedirectToAction("Index");
                 }
                 return RedirectToAction("Index", "Login");
             }
@@ -153,7 +157,7 @@ namespace TP10.Controllers
         {
             try
             {
-                if(isLogin())
+                if(isLogin() && isAdmin())
                 {
                     _repository.Delete(idTarea);
                     return RedirectToAction("Index");
@@ -174,10 +178,16 @@ namespace TP10.Controllers
             {
                 if(isLogin())
                 {
+                    var tareaObtenida = _repository.Get(idTarea);
                     var usuarios = _usuarioRepositorio.GetAllUsuarios();
-                    var asignarVM = new AsignarUsuarioViewModel(idTarea, usuarios);
 
-                    return View(asignarVM);
+                    if(tareaObtenida.IdUsuarioAsignado == Convert.ToInt32(HttpContext.Session.GetString("Id")) && isAdmin())
+                    {
+                        var asignarVM = new AsignarUsuarioViewModel(idTarea, usuarios);
+                    
+                        return View(asignarVM);
+                    }
+                    return RedirectToAction("Index");
                 }
                 return RedirectToAction("Index", "Login");
             }

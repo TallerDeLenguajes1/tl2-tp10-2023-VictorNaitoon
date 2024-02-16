@@ -1,7 +1,6 @@
 @{
     ViewData["Title"] = "Tareas";
     var rol = Context.Session.GetString("Rol");
-    var Usuario = Context.Session.GetString("NombreDeUsuario").ToLower();
 }
 @using TP10.ViewModels
 @model List<ListarTareasViewModel>
@@ -37,24 +36,18 @@
                 <td>@tarea.Color</td>
                 <td>@tarea.Estado</td>
                 <td>@tarea.UsuarioAsignado</td>
-                @if(Usuario == tarea.UsuarioAsignado.ToLower())
-                {
-                    <td>
-                        <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Editar</a>
-                    </td>
-                }
+                <td>
+                    <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Editar</a>
+                </td>
                 @if(rol == "Administrador")
                 {
                     <td>
                         <a asp-controller="Tarea" asp-action="DeleteTarea" asp-route-idTarea="@tarea.IdTarea" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>
                     </td>
                 }
-                @if(rol == "Administrador" && Usuario == tarea.UsuarioAsignado.ToLower())
-                {
-                    <td>
-                        <a asp-controller="Tarea" asp-action="AsignarUsuario" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Asignar</a>
-                    </td>
-                }
+                <td>
+                    <a asp-controller="Tarea" asp-action="AsignarUsuario" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Asignar</a>
+                </td>
             </tr>
         }
     </tbody>
