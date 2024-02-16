@@ -154,15 +154,6 @@ namespace TP10.Controllers
             return HttpContext.Session.GetString("Rol") == Enum.GetName(Roles.Administrador);
         }
         
-        //TERMINADO LO DE USUARIO CON TODOS LOS VIEW MODELS, QUEDAN TABLEROS Y TAREAS
         
-
-        //Para que se mande el id en la modificacion siempre tiene que ir con el hidder para que no nos muestre el id
-        // Esto de comentar estas lineas provoco que desaparezca el error de los multiples endpoints
-        // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        // public IActionResult Error()
-        // {
-        //     return View("Error!");
-        // }
     }
 }
