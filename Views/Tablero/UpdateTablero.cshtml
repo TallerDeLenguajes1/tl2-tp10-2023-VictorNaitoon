@@ -1,24 +1,57 @@
 @using TP10.ViewModels
 @model ModificarTableroViewModel
 
-<form asp-controller="Tablero" asp-action="UpdateTablero">
-    <input hidden asp-for="@Model.Id">
+@if(Model.TieneMensajeDeError)
+{
+    <div class="alert alert-warning text-center">@Model.MensajeDeError</div>
+}
 
-    <div class="form-group">
-        <label asp-for="@Model.IdUsuarioPropietario">ID Usuario Propietario</label>
-        <input asp-for="@Model.IdUsuarioPropietario" class="form-control" />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Modificar Tablero</h6>
+                    <small><a asp-controller="Tablero" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Tablero" asp-action="UpdateTablero" method="post">
+                        <input hidden asp-for="@Model.Id"/>
+
+                        @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                        {
+                            <div class="form-group">
+                                <label asp-for="@Model.IdUsuarioPropietario">Usuario Asignado</label>
+                                <select asp-for="@Model.IdUsuarioPropietario" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
+                                    <option value="">Seleccionar Usuario</option>
+                                </select>
+                                <input type="hidden" asp-for="@Model.IdUsuarioPropietario" />
+                            </div>
+                        } else {
+                            <div class="form-group">
+                                <label asp-for="@Model.IdUsuarioPropietario">Usuario Asignado</label>
+                                <select asp-for="@Model.IdUsuarioPropietario" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control" disabled>
+                                    <option value="">Seleccionar Usuario</option>
+                                </select>
+                                <input type="hidden" asp-for="@Model.IdUsuarioPropietario" />
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Nombre">Nombre Tablero</label>
+                            <input asp-for="@Model.Nombre" class="form-control" />
+                            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Descripcion">Descripcion Tablero</label>
+                            <input asp-for="@Model.Descripcion" class="form-control" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Nombre">Nombre Tablero</label>
-        <input asp-for="@Model.Nombre" class="form-control" />
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Descripcion">Descripcion Tablero</label>
-        <input asp-for="@Model.Descripcion" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Actualizar</button>
-</form>
+</div>

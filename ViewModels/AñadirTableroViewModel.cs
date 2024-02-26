@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TP10.Models;
 
 namespace TP10.ViewModels
 {
@@ -14,8 +15,15 @@ namespace TP10.ViewModels
         [Required(ErrorMessage = "La descripción es requerida")]
         [Display(Name = "Descripcion del tablero")]
         public string Descripcion { get; set; }
-        [Required(ErrorMessage = "El id del usuario propietario es requerido")]
-        [Display(Name = "Id del usuario propietario")]
         public int IdUsuarioPropietario { get; set; }
+        public List<Usuario> Usuarios { get; set; } = new List<Usuario>();
+        public string MensajeDeError;
+
+        public bool TieneMensajeDeError => !string.IsNullOrEmpty(MensajeDeError);
+
+        public void Inicializar(List<Usuario> usuarios)
+        {
+            Usuarios = usuarios;
+        }
     }
 }

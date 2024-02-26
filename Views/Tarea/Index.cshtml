@@ -3,57 +3,37 @@
     var rol = Context.Session.GetString("Rol");
 }
 @using TP10.ViewModels
-@model List<ListarTareasViewModel>
+@model ListarTareasViewModel
 
-<h2>Listado de las tareas</h2>
-
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th hidden>ID</th>
-            <th>Tablero al que pertence</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Color</th>
-            <th>Estado</th>
-            <th>Usuario Asignado</th>
-            <th></th>
-            @if(rol == "Administrador")
-            {
-                <th></th>
-            }
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tarea in Model)
-        {
-            <tr>
-                <td hidden>@tarea.IdTarea</td>
-                <td>@tarea.TableroAlQuePertenece</td>
-                <td>@tarea.Nombre</td>
-                <td>@tarea.Descripcion</td>
-                <td>@tarea.Color</td>
-                <td>@tarea.Estado</td>
-                <td>@tarea.UsuarioAsignado</td>
-                <td>
-                    <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Editar</a>
-                </td>
-                @if(rol == "Administrador")
-                {
-                    <td>
-                        <a asp-controller="Tarea" asp-action="DeleteTarea" asp-route-idTarea="@tarea.IdTarea" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>
-                    </td>
-                }
-                <td>
-                    <a asp-controller="Tarea" asp-action="AsignarUsuario" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Asignar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@if(rol == "Administrador")
+@if(TempData["MensajeDeAlerta"] != null)
 {
-    <a href="CreateTarea" class="btn btn-primary">Crear Nueva Tarea</a>
+    <script>
+        alert('@TempData["MensajeDeAlerta"]');
+    </script>
 }
+
+<div class="container">
+    <h2 class="text-center mt-4 mb-4">Listado de las tareas</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a href="CreateTarea" class="btn btn-success mb-3">Crear Nueva Tarea</a>
+
+            <form asp-controller="Tarea" asp-action="SeleccionarTablero" method="post">
+                <div class="form-group">
+                    <label asp-for="@Model.IdTablero">Tablero</label>
+                    <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control">
+                        <option value="">Seleccionar Tablero</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Seleccionar</button>
+            </form>
+
+            @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+            {
+                <a asp-controller="Tarea" asp-action="TareasSinAsignar" class="btn btn-info mt-3">Tareas sin asignar</a>
+            }
+        </div>
+    </div>
+</div>

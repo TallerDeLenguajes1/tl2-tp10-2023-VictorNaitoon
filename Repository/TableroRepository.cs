@@ -166,5 +166,34 @@ namespace TP10.Repository
                 conexion.Close();
             }
         }
+
+        public Tablero ExisteNombre(string nombre)
+        {
+            Tablero tablero = null;
+
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+
+                SQLiteCommand command = conexion.CreateCommand();
+                command.CommandText = $"SELECT * FROM tablero WHERE nombre COLLATE NOCASE = @nombre";
+                command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
+
+                using(SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if(reader.Read())
+                    {
+                        tablero = new Tablero();
+                        tablero.IdTablero = Convert.ToInt32(reader["id_tablero"]);
+                        tablero.IdUsuarioPropietario = Convert.ToInt32(reader["id_usuario_propietario"]);
+                        tablero.Nombre = reader["nombre"].ToString();
+                        tablero.Descripcion = reader["descripcion"].ToString();
+                    }
+                }
+
+                conexion.Close();
+            }
+            return tablero;
+        }
     }
 }

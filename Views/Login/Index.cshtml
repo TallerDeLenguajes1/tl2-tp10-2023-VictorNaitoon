@@ -1,7 +1,15 @@
 @model TP10.ViewModels.LoginViewModel
+
 @if(Model.TieneMensajeDeError)
 {
     <p>@Model.MensajeDeError</p>
+}
+
+@if(TempData["MensajeDeLogueo"] != null)
+{
+    <script>
+        alert('@TempData["MensajeDeLogueo"]');
+    </script>
 }
 
 <form asp-controller="Login" asp-action="Login" method="post">
@@ -17,6 +25,8 @@
         <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Ingresar</button>
-</form>
 
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+    <div class="alert alert-secondary mt-3 text-center" role="alert">
+        O no tienes cuenta? <a href="../Usuario/CreateUsuario" class="alert-link">Regístrese aquí!</a>
+    </div>
+</form>

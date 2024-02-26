@@ -16,6 +16,9 @@ namespace TP10.ViewModels
         [StringLength(30, MinimumLength = 8, ErrorMessage = "La contrasenia debe tener entre 8 y 30 digitos")]
         public string Contrasenia { get; set; }
         public Roles? Rol { get; set; }
+        public string MensajeDeError;
+
+        public bool TieneMensajeDeError => !string.IsNullOrEmpty(MensajeDeError);
 
         public ModificarUsuarioViewModel()
         {

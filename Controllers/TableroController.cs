@@ -32,17 +32,11 @@ namespace TP10.Controllers
             {
                 if(isLogin())
                 {
-                    if(isAdmin())
-                    {
-                        var tableros = _repository.GetAll();
-                        var tablerosViewModel = tableros.Select(t => new ListarTablerosViewModel(t, _usuarioRepositorio)).ToList();
-                        return View(tablerosViewModel);
-                    }
-
-                    var tablerosPorId = _repository.GetAllTableros(Convert.ToInt32(HttpContext.Session.GetString("Id")));
-                    var tablerosVM = tablerosPorId.Select(x => new ListarTablerosViewModel(x, _usuarioRepositorio)).ToList();
-                    return View(tablerosVM);
-                }   
+                    var tableros = _repository.GetAll();
+                    var tablerosViewModel = tableros.Select(t => new ListarTablerosViewModel(t, _usuarioRepositorio)).ToList();
+                    return View(tablerosViewModel);        
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
                 return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
@@ -57,11 +51,21 @@ namespace TP10.Controllers
         {
             try
             {  
-                if(isLogin() && isAdmin())
+                if(isLogin())
                 {
-                    return View(new AñadirTableroViewModel());
-                } 
-                return RedirectToAction("Index", "Tablero");
+                    if(isAdmin())
+                    {
+                        var añadirVM = new AñadirTableroViewModel();
+                        var usuarios = _usuarioRepositorio.GetAllUsuarios();
+
+                        añadirVM.Inicializar(usuarios);
+                        return View(añadirVM);
+                    }
+                    TempData["MensajeDeAlerta"] = "No puedes crear un tablero ya que no eres administrador";
+                    return RedirectToAction("Index");
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {
@@ -75,16 +79,33 @@ namespace TP10.Controllers
         {
             try
             {
-                if(!ModelState.IsValid) return View("CreateTablero", tablero);
+                if(isLogin())
+                {
+                    if(isAdmin())
+                    {
+                        if(!ModelState.IsValid) return View("CreateTablero", tablero);
 
-                var tableroNuevo = new Tablero();
-                tableroNuevo.Nombre = tablero.Nombre;
-                tableroNuevo.IdUsuarioPropietario = tablero.IdUsuarioPropietario;
-                tableroNuevo.Descripcion = tablero.Descripcion;
+                        var tableroComprobar = _repository.ExisteNombre(tablero.Nombre);
+                        if(tableroComprobar != null && tableroComprobar.Nombre != null)
+                        {
+                            tablero.MensajeDeError = $"El nombre {tablero.Nombre} no esta disponible";
+                            return View("CreateTablero", tablero);
+                        }
 
-                _repository.Create(tableroNuevo);
+                        var tableroNuevo = new Tablero();
+                        tableroNuevo.Nombre = tablero.Nombre;
+                        tableroNuevo.IdUsuarioPropietario = tablero.IdUsuarioPropietario;
+                        tableroNuevo.Descripcion = tablero.Descripcion;
 
-                return RedirectToAction("Index");
+                        _repository.Create(tableroNuevo);
+
+                        return RedirectToAction("Index");
+                    }
+                    TempData["MensajeDeAlerta"] = "No puedes crear tableros por que no eres administrador";
+                    return RedirectToAction("Index");
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {
@@ -99,11 +120,21 @@ namespace TP10.Controllers
         {
             try
             {
-                if(isLogin() && isAdmin())
+                if(isLogin())
                 {
-                    return View(new ModificarTableroViewModel(_repository.Get(idTablero)));
+                    var usuarios = _usuarioRepositorio.GetAllUsuarios();
+                    var tableroModificar = _repository.Get(idTablero);
+
+                    if(tableroModificar.IdUsuarioPropietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) || isAdmin())
+                    {
+                        var modificarVM = new ModificarTableroViewModel(tableroModificar, usuarios);
+                        return View(modificarVM);
+                    }
+                    TempData["MensajeDeAlerta"] = "No puedes acceder a este tablero por que no te pertenece o no eres administrador";
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index", "Tablero");
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {
@@ -117,16 +148,28 @@ namespace TP10.Controllers
         {
             try
             {
-                if(!ModelState.IsValid) return View("UpdateTablero", tablero);
+                if(isLogin())
+                {
+                    if(!ModelState.IsValid) return View("UpdateTablero", tablero);
 
-                var tableroNuevo = new Tablero();
-                tableroNuevo.Nombre = tablero.Nombre;
-                tableroNuevo.Descripcion = tablero.Descripcion;
-                tableroNuevo.IdUsuarioPropietario = tablero.IdUsuarioPropietario;
+                    var tableroComprobar = _repository.ExisteNombre(tablero.Nombre);
+                    if(tableroComprobar != null && tableroComprobar.Nombre != null)
+                    {
+                        tablero.MensajeDeError = $"El nombre {tablero.Nombre} no esta disponible";
+                        return View("UpdateTablero", tablero);
+                    }
 
-                _repository.Update(tablero.Id, tableroNuevo);
+                    var tableroNuevo = new Tablero();
+                    tableroNuevo.Nombre = tablero.Nombre;
+                    tableroNuevo.Descripcion = tablero.Descripcion;
+                    tableroNuevo.IdUsuarioPropietario = tablero.IdUsuarioPropietario;
 
-                return RedirectToAction("Index");
+                    _repository.Update(tablero.Id, tableroNuevo);
+
+                    return RedirectToAction("Index");
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {
@@ -141,12 +184,20 @@ namespace TP10.Controllers
         {
             try
             {
-                if(isLogin() && isAdmin())
+                if(isLogin())
                 {
-                    _repository.Delete(idTablero);
+                    var tableroEliminar = _repository.Get(idTablero);
+
+                    if(tableroEliminar.IdUsuarioPropietario == Convert.ToInt32(HttpContext.Session.GetString("Id")) || isAdmin())
+                    {
+                        _repository.Delete(idTablero);
+                        return RedirectToAction("Index");
+                    }
+                    TempData["MensajeDeAlerta"] = "No puedes eliminar este tablero por que no te pertenece o no eres administrador";
                     return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {

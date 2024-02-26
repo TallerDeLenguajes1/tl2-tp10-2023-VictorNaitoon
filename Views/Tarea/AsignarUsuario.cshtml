@@ -1,19 +1,30 @@
-@{ 
+@{
     ViewData["Title"] = "Asignar Usuario";
 }
-
 @using TP10.ViewModels;
-@model AsignarUsuarioViewModel;
+@model AsignarUsuarioViewModel
 
-<form asp-controller="Tarea" asp-action="AsignarUsuario">
-    <input hidden asp-for = "@Model.IdTarea">
-    <div class="form-group">
-        <label for="usuario">Elegir Usuario</label>
-        <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
-            <option value="">Seleccionar Usuario</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Asignar</button>
-</form>
+<div class="container my-4">
+    <div class="card shadow">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Asignar Usuario</h6>
+            <small><a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+        </div>
+        <div class="card-body">
+            <form asp-controller="Tarea" asp-action="AsignarUsuario" method="post">
+                <input hidden asp-for="@Model.IdTarea" />
 
-@section Scripts{<partial name="_ValidationScriptsPartial"/>}
+                <div class="form-group">
+                    <label for="usuario" class="font-weight-bold">Elegir Usuario:</label>
+                    <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="custom-select">
+                        <option value="">Seleccionar Usuario</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Asignar</button>
+            </form>
+        </div>
+    @section Scripts{
+        <partial name="_ValidationScriptsPartial" />
+    }
+</div>

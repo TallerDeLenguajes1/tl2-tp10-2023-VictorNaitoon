@@ -16,11 +16,13 @@ namespace TP10.Controllers
     {
         private readonly ILogger<UsuarioController> _logger;
         private IUsuarioRepository _repository;
+        private ITareaRepository _repositoryTarea;
 
-        public UsuarioController(ILogger<UsuarioController> logger, IUsuarioRepository repository)
+        public UsuarioController(ILogger<UsuarioController> logger, IUsuarioRepository repository, ITareaRepository repositoryTarea)
         {
             _logger = logger;
             _repository = repository;
+            _repositoryTarea = repositoryTarea;
         }
 
         [HttpGet("Index")]
@@ -32,7 +34,7 @@ namespace TP10.Controllers
                 {
                     return View(new ListarUsuariosViewModels(_repository.GetAllUsuarios(), isAdmin()));
                 }
-
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
                 return RedirectToRoute(new { controller = "Login", action = "Index"});
             }
             catch (System.Exception ex)
@@ -49,9 +51,7 @@ namespace TP10.Controllers
             
             try
             {
-                if(isLogin() && isAdmin()) return View(new AñadirUsuarioViewModel());
-                return RedirectToAction("Index", "Usuario");
-                
+                return View(new AñadirUsuarioViewModel()); 
             }
             catch (System.Exception ex)
             {
@@ -66,14 +66,30 @@ namespace TP10.Controllers
             try
             {
                 if(!ModelState.IsValid) return View("CreateUsuario", usuario);
+                    
+                var usuarioComprobar = _repository.ExisteNombre(usuario.NombreUsuario);
+                if(usuarioComprobar.NombreDeUsuario != null)
+                {
+                    usuario.MensajeDeError = $"El nombre {usuario.NombreUsuario} no esta disponible";
+                    return View("CreateUsuario", usuario);
+                }
 
                 var user = new Usuario();
+                if(HttpContext.Session.GetString("Rol") == Roles.Administrador.ToString())
+                {
+                    user.NombreDeUsuario = usuario.NombreUsuario;
+                    user.Rol = usuario.Rol;
+                    user.Contrasenia = usuario.Contrasenia;
+                    _repository.CreateUsuario(user);
+                            
+                    return RedirectToAction("Index");
+                }
                 user.NombreDeUsuario = usuario.NombreUsuario;
-                user.Rol = usuario.Rol;
                 user.Contrasenia = usuario.Contrasenia;
-                    
+                user.Rol = Roles.Operador;
+
                 _repository.CreateUsuario(user);
-                    
+                            
                 return RedirectToAction("Index");
             }
             catch (System.Exception ex)
@@ -90,7 +106,16 @@ namespace TP10.Controllers
         {
             try
             {
-                if(isLogin() && isAdmin()) return View(new ModificarUsuarioViewModel(_repository.GetUsuario(idUsuario)));
+                if(isLogin())
+                {
+                    if(isAdmin() || idUsuario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                    {
+                        return View(new ModificarUsuarioViewModel(_repository.GetUsuario(idUsuario)));
+                    }
+                    TempData["MensajeDeAlerta"] = "Debes ser administrador para modificar usuarios o debes ser el usuario que quieres modificar";
+                    return RedirectToAction("Index");
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
                 return RedirectToAction("Index", "Usuario");
             }
             catch (System.Exception ex)
@@ -105,15 +130,40 @@ namespace TP10.Controllers
         {
             try
             {
-                if(!ModelState.IsValid) return RedirectToAction("UpdateUsuario", usuario);
-                var user = new Usuario();
-                user.NombreDeUsuario = usuario.NombreUsuario;
-                user.Contrasenia = usuario.Contrasenia;
-                user.Rol = usuario.Rol;
 
-                _repository.UpdateUsuario(usuario.Id, user);
+                if(isLogin())
+                {
+                    if(!ModelState.IsValid) return RedirectToAction("UpdateUsuario", usuario);
+                    var user = new Usuario();   
 
-                return RedirectToAction("Index");
+                    var usuarioComprobar = _repository.ExisteNombre(usuario.NombreUsuario);
+                    if(usuarioComprobar.NombreDeUsuario != null)
+                    {
+                        usuario.MensajeDeError = $"El nombre {usuario.NombreUsuario} no esta disponible";
+                        return View("UpdateUsuario", usuario);
+                    }
+                    
+                    if(isAdmin())
+                    {
+                        user.NombreDeUsuario = usuario.NombreUsuario;
+                        user.Contrasenia = usuario.Contrasenia;
+                        user.Rol = usuario.Rol;
+                        _repository.UpdateUsuario(usuario.Id, user);
+
+                        return RedirectToAction("Index");
+                    }
+
+                    user.NombreDeUsuario = usuario.NombreUsuario;
+                    user.Contrasenia = usuario.Contrasenia;
+                    user.Rol = Roles.Operador;
+                    _repository.UpdateUsuario(usuario.Id, user);
+
+                    return RedirectToAction("Index");
+
+                }
+                TempData["MensajeDeLogueo"] = "Debes loguearta para acceder al sistema";
+                return RedirectToAction("Index", "Login");
+                
             }
             catch (System.Exception ex)
             {
@@ -128,12 +178,24 @@ namespace TP10.Controllers
         {
             try
             {
-                if(isLogin() && isAdmin())
+                if(isLogin())
                 {
-                    _repository.DeleteUsuario(idUsuario);
+                    if(isAdmin() || idUsuario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                    {
+                        _repository.DeleteUsuario(idUsuario);
+                        _repositoryTarea.UpdateId(idUsuario);
+
+                        if(idUsuario == Convert.ToInt32(HttpContext.Session.GetString("Id")))
+                        {
+                            return RedirectToAction("Logout", "Login");
+                        }
+                        return RedirectToAction("Index");
+                    }
+                    TempData["MensajeDeAlerta"] = "Debes ser administrador para eliminar usuarios o debe ser tu usuario el que quieres eliminar";
                     return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                TempData["MensajeDeLogueo"] = "Debes loguearte para acceder al sistema";
+                return RedirectToAction("Index", "Login");
             }
             catch (System.Exception ex)
             {

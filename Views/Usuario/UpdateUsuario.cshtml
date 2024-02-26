@@ -1,27 +1,47 @@
 @using TP10.ViewModels
 @model ModificarUsuarioViewModel
 
-<form asp-controller="Usuario" asp-action="UpdateUsuario">
-    <input hidden asp-for="@Model.Id">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Modificar Usuario</h6>
+                    <small><a asp-controller="Usuario" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+                </div>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Usuario" asp-action="UpdateUsuario" method="post">
+                    <input hidden asp-for="@Model.Id">
 
-    <div class="form-group">
-        <label asp-for="@Model.NombreUsuario">Usuario:</label>
-        <input asp-for="@Model.NombreUsuario" class="form-control" />
-        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>
+                    @if(Model.TieneMensajeDeError)
+                    {
+                        <p>@Model.MensajeDeError</p>
+                    }
+
+                    <div class="form-group">
+                        <label asp-for="@Model.NombreUsuario">Usuario:</label>
+                        <input asp-for="@Model.NombreUsuario" class="form-control" />
+                        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Contrasenia">Contraseña:</label>
+                        <input type="password" asp-for="@Model.Contrasenia" class="form-control" />
+                        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+                    </div>
+
+                    @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                    {
+                        <div class="form-group">
+                            <label asp-for="@Model.Rol">Rol:</label>
+                            <select asp-for="@Model.Rol" asp-items="Html.GetEnumSelectList<Roles>()" class="form-control"></select>
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-primary">Modificar</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Contrasenia">Contraseña:</label>
-        <input type="password" asp-for="@Model.Contrasenia" class="form-control" />
-        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Rol">Rol:</label>
-        <select asp-for="@Model.Rol" asp-items="Html.GetEnumSelectList<Roles>()" class="form-control"></select>
-    </div>
-
-    <button type="submit">Modificar</button>
-
-
-</form>
+</div>

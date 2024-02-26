@@ -1,45 +1,133 @@
+
 @using TP10.ViewModels
 @model ModificarTareaViewModel
 
-<form asp-controller="Tarea" asp-action="UpdateTarea">
-    <input hidden asp-for="@Model.IdTarea">
+@if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+{
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Modificar Tarea</h6>
+                    <small><a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Tarea" asp-action="UpdateTarea" class="mt-4">
+                        <input hidden asp-for="@Model.IdTarea">
 
-    <div class="form-group">
-        <label asp-for="@Model.IdTablero">ID Tablero</label>
-        <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control" readonly>
-            <option value="">Seleccionar Tablero</option>
-        </select>
-        <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="@Model.IdTablero" class="form-label">ID Tablero</label>
+                            <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control">
+                                <option value="">Seleccionar Tablero</option>
+                            </select>
+                            <input type="hidden" asp-for="@Model.IdTablero" />
+                            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Nombre" class="form-label">Nombre</label>
+                            <input asp-for="@Model.Nombre" class="form-control"/>
+                            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Descripcion" class="form-label">Descripción</label>
+                            <input asp-for="@Model.Descripcion" class="form-control"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Estado" class="form-label">Estado</label>
+                            <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
+                            <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color" class="form-label">Color</label>
+                            <select asp-for="@Model.Color" class="form-control">
+                                <option value="lightcoral">Prioridad Alta</option>
+                                <option value="lightgreen">Prioridad Baja</option>
+                                <option value="lightblue">Prioridad Media</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.IdUsuarioAsignado" class="form-label">ID Usuario Asignado</label>
+                            <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control" disabled>
+                                <option value="">Seleccionar Usuario</option>
+                            </select>
+                            <input type="hidden" asp-for="@Model.IdUsuarioAsignado" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+} else {
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Modificar Tablero</h6>
+                    <small><a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Tarea" asp-action="UpdateTarea" class="mt-4">
+                        <input hidden asp-for="@Model.IdTarea">
 
-    <div class="form-group">
-        <label asp-for="@Model.Nombre">Nombre</label>
-        <input asp-for="@Model.Nombre" class="form-control" readonly/>
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                        <div class="form-group">
+                            <label asp-for="@Model.IdTablero">ID Tablero</label>
+                            <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control" disabled>
+                                <option value="">Seleccionar Tablero</option>
+                            </select>
+                            <input type="hidden" asp-for="@Model.IdTablero" />
+                            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Nombre">Nombre</label>
+                            <input asp-for="@Model.Nombre" class="form-control" readonly/>
+                            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Descripcion">Descripcion</label>
+                            <input asp-for="@Model.Descripcion" class="form-control" readonly/>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.Estado">Estado</label>
+                            <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
+                            <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <select asp-for="@Model.Color" class="form-control" disabled>
+                                <option value="lightcoral">Prioridad Alta</option>
+                                <option value="lightgreen">Prioridad Baja</option>
+                                <option value="lightblue">Prioridad Media</option>
+                            </select>
+                            <input type="hidden" asp-for="@Model.Color" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@Model.IdUsuarioAsignado">ID Usuario Asignado</label>
+                            <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control" disabled>
+                                <option value="">Seleccionar Usuario</option>
+                            </select>
+                            <input type="hidden" asp-for="@Model.IdUsuarioAsignado" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Descripcion">Descripcion</label>
-        <input asp-for="@Model.Descripcion" class="form-control" readonly/>
     </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Estado">Estado</label>
-        <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
-        <span asp-validation-for="@Model.Estado" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.Color">Color</label>
-        <input asp-for="@Model.Color" class="form-control" readonly/>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="@Model.IdUsuarioAsignado">ID Usuario Asignado</label>
-        <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control" readonly>
-            <option value="">Seleccionar Usuario</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Actualizar</button>
-</form>
+}

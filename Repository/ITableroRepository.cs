@@ -14,5 +14,6 @@ namespace TP10.Repository
         public List<Tablero> GetAll();
         public List<Tablero> GetAllTableros(int idUsuario);
         public void Delete(int idTablero);
+        public Tablero ExisteNombre(string nombre);
     }
 }

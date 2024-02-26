@@ -4,23 +4,42 @@
 @using TP10.ViewModels
 @model AñadirUsuarioViewModel
 
-<form asp-controller="Usuario" asp-action="CreateUsuario">
-    <div class="form-group">
-        <label asp-for="@Model.NombreUsuario">Usuario:</label>
-        <input asp-for="@Model.NombreUsuario" class="form-control" />
-        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>
-    </div>
+@if(Model.TieneMensajeDeError)
+{
+    <p>@Model.MensajeDeError</p>
+}
 
-    <div class="form-group">
-        <label asp-for="@Model.Contrasenia">Contraseña:</label>
-        <input type="password" asp-for="@Model.Contrasenia" class="form-control" />
-        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
-    </div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Crear Usuario</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Usuario" asp-action="CreateUsuario" method="post">
+                    <div class="form-group">
+                        <label asp-for="@Model.NombreUsuario">Usuario:</label>
+                        <input asp-for="@Model.NombreUsuario" class="form-control" />
+                        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>
+                    </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Rol">Rol:</label>
-        <select asp-for="@Model.Rol" asp-items="Html.GetEnumSelectList<TP10.Models.Roles>()" class="form-control"></select>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Contrasenia">Contraseña:</label>
+                        <input type="password" asp-for="@Model.Contrasenia" class="form-control" />
+                        <span asp-validation-for="@Model.Contrasenia" class="text-danger"></span>
+                    </div>
 
-    <button type="submit" class="btn btn-primary">Enviar</button>
-</form>
+                    @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                    {
+                        <div class="form-group">
+                            <label asp-for="@Model.Rol">Rol:</label>
+                            <select asp-for="@Model.Rol" asp-items="Html.GetEnumSelectList<TP10.Models.Roles>()" class="form-control"></select>
+                        </div>
+                    }
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

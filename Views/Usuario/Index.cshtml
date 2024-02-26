@@ -4,45 +4,50 @@
 @using TP10.ViewModels
 @model ListarUsuariosViewModels
 
+@if(TempData["MensajeDeAlerta"] != null)
+{
+    <script>
+        alert('@TempData["MensajeDeAlerta"]');
+    </script>
+}
+
 <h2>Listado de Usuarios</h2>
 
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th hidden>ID</th>
-            <th>Nombre</th>
-            <th hidden>Contraseña</th>
-            <th>Rol</th>
-            @if(Model.EsAdministrador)
-            {
-            <th></th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in Model.Usuarios)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td hidden>@usuario.Id</td>
-                <td>@usuario.NombreDeUsuario</td>
-                <td hidden>@usuario.Contrasenia</td>
-                <td>@usuario.Rol</td>
-                @if(Model.EsAdministrador)
-                {
-                <td>
-                    <a asp-controller="Usuario" asp-action="UpdateUsuario" asp-route-idUsuario="@usuario.Id" class="btn btn-success">Editar</a>
-                    <a asp-controller="Usuario" asp-action="DeleteUsuario" asp-route-idUsuario="@usuario.Id" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>                      
-                </td>
-                }
+                <th hidden>ID</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <tr>
+                    <td hidden>@usuario.Id</td>
+                    <td>@usuario.NombreDeUsuario</td>
+                    <td>@usuario.Rol</td>
+                    <td>
+                        @if(Model.EsAdministrador || (usuario.Id == Convert.ToInt32(Context.Session.GetString("Id"))))
+                        {
+                            <a asp-controller="Usuario" asp-action="UpdateUsuario" asp-route-idUsuario="@usuario.Id" class="btn btn-primary">Editar</a>
+                            <a asp-controller="Usuario" asp-action="DeleteUsuario" asp-route-idUsuario="@usuario.Id" onclick="return confirm('¿Estás seguro que quieres eliminar el elemento?')" class="btn btn-danger">Eliminar</a>                      
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @if(Model.EsAdministrador)
 {
-    <a href="CreateUsuario" class="btn btn-primary">Crear Nuevo Usuario</a>
+    <a href="CreateUsuario" class="btn btn-success">Crear Nuevo Usuario</a>
 }
+
 
 
 

@@ -153,7 +153,7 @@ namespace TP10.Repository
                 conexion.Open();
 
                 SQLiteCommand command = conexion.CreateCommand();
-                command.CommandText = $"SELECT * FROM tarea WHERE id_tablero = @idUsuario";
+                command.CommandText = $"SELECT * FROM tarea WHERE id_usuario_asignado = @idUsuario";
                 command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -233,6 +233,23 @@ namespace TP10.Repository
             }
 
             return tareas;
+        }
+
+        public void UpdateId(int idUsuario)
+        {
+            using (SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+
+                SQLiteCommand command = conexion.CreateCommand();
+                command.CommandText = $"UPDATE tarea SET id_usuario_asignado = 0 WHERE id_usuario_asignado = @idUsuario";
+
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
+
+                command.ExecuteNonQuery();
+
+                conexion.Close();
+            }
         }
     }
 }

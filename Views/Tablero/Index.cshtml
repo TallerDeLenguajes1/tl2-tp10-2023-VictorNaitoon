@@ -6,41 +6,58 @@
 @using TP10.ViewModels
 @model List<ListarTablerosViewModel>
 
-<h2>Listado de los tableros</h2>
-
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th hidden>ID</th>
-            <th>Usuario Propietario</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            @if(usuario == "Administrador")
-            {
-                <th></th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tablero in Model)
-        {
-            <tr>
-                <td hidden>@tablero.IdTablero</td>
-                <td>@tablero.NombreDeUsuarioPropietario</td>
-                <td>@tablero.Nombre</td>
-                <td>@tablero.Descripcion</td>
-                @if(usuario == "Administrador")
-                {
-                    <td>
-                        <a asp-controller="Tablero" asp-action="UpdateTablero" asp-route-idTablero="@tablero.IdTablero" class="btn btn-success">Editar</a>
-                        <a asp-controller="Tablero" asp-action="DeleteTablero" asp-route-idTablero="@tablero.IdTablero" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-success">Eliminar</a>                      
-                    </td>
-                }
-            </tr>
-        }
-    </tbody>
-</table>
-@if(usuario == "Administrador")
+@if(TempData["MensajeDeAlerta"] != null)
 {
-    <a href="CreateTablero" class="btn btn-primary">Crear Nuevo Tablero</a>
+    <script>
+        alert('@TempData["MensajeDeAlerta"]');
+    </script>
 }
+@if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+{
+    <a href="CreateTablero" class="btn btn-success">Crear Nuevo Tablero</a>
+}
+@if(Model.Count == 0)
+{
+    <h2>No posees tableros</h2>
+}
+else
+{
+    <h2>Listado de los tableros</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Usuario Propietario</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tablero in Model)
+                {
+                    <tr>
+                        <td>@tablero.NombreDeUsuarioPropietario</td>
+                        <td>@tablero.Nombre</td>
+                        <td>@tablero.Descripcion</td>
+                        <td>
+                            @if(Context.Session.GetString("NombreDeUsuario") == tablero.NombreDeUsuarioPropietario || Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                            {
+                            <a asp-controller="Tablero" asp-action="UpdateTablero" asp-route-idTablero="@tablero.IdTablero" class="btn btn-primary">Editar</a>
+                            <a asp-controller="Tablero" asp-action="DeleteTablero" asp-route-idTablero="@tablero.IdTablero" onclick="return confirm('¿Estás seguro que quieres eliminar el elemento?')" class="btn btn-danger">Eliminar</a>
+                            }
+                        </td>
+                        <td>
+                            <a asp-controller="Tarea" asp-action="TareasPorTableros" asp-route-idTablero="@tablero.IdTablero" class="btn btn-info">Ver Tareas</a>                      
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+
+

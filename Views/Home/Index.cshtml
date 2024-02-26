@@ -4,4 +4,21 @@
     var usuario = Context.Session.GetString("NombreDeUsuario");
 }
 
-<h2>Bienvenido/a @if(isLogin){@usuario;} </h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4 mt-5">¡Bienvenido/a!</h1>
+            @if(isLogin)
+            {
+                <h2 class="mt-3">Estás conectado como: @usuario</h2>
+                <p class="lead mt-3">¡Gracias por utilizar nuestra plataforma Kanban!</p>
+                <p class="lead">Aquí podrás gestionar tus tareas de forma eficiente y organizada.</p>
+            }
+            else
+            {
+                <p class="lead mt-3">Por favor, inicia sesión para acceder a todas las funcionalidades de Kanban.</p>
+            }
+        </div>
+    </div>
+</div>
+

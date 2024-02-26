@@ -1,27 +1,47 @@
 @{
     ViewData["Title"] = "Crear Tablero";
+    var id = Convert.ToInt32(Context.Session.GetString("Id"));
 }
 @using TP10.ViewModels
 @model AñadirTableroViewModel
 
-<form asp-controller="Tablero" asp-action="CreateTablero">
-    <div class="form-group">
-        <label asp-for="@Model.IdUsuarioPropietario">ID Usuario Propietario</label>
-        <input asp-for="@Model.IdUsuarioPropietario" class="form-control" required/>
-        <span asp-validation-for="@Model.IdUsuarioPropietario" class="text-danger"></span>
-    </div>
+@if(Model.TieneMensajeDeError)
+{
+    <h3>@Model.MensajeDeError</h3>
+}
 
-    <div class="form-group">
-        <label asp-for="@Model.Nombre">Nombre del tablero</label>
-        <input asp-for="@Model.Nombre" class="form-control" required/>
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
-    </div>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Crear Tablero</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Tablero" asp-action="CreateTablero" method="post">
 
-    <div class="form-group">
-        <label asp-for="@Model.Descripcion">Descripcion</label>
-        <input asp-for="@Model.Descripcion" class="form-control" />
-        <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
-    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Nombre">Nombre del tablero</label>
+                        <input asp-for="@Model.Nombre" class="form-control" required/>
+                        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                    </div>
 
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
+                    <div class="form-group">
+                        <label asp-for="@Model.Descripcion">Descripción</label>
+                        <input asp-for="@Model.Descripcion" class="form-control" />
+                        <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label asp-for="@Model.IdUsuarioPropietario">Usuario Asignado</label>
+                        <select asp-for="@Model.IdUsuarioPropietario" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
+                            <option value="">Seleccionar Usuario</option>
+                        </select>
+                        <input type="hidden" asp-for="@Model.IdUsuarioPropietario" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

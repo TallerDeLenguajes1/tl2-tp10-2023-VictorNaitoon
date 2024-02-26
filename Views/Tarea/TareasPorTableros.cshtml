@@ -1,0 +1,91 @@
+@using TP10.ViewModels
+@model ListarTareasViewModel
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Tareas Por Tableros</h6>
+                <small><a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary btn-sm">Tareas</a></small>
+            </div>
+            <form asp-controller="Tarea" asp-action="SeleccionarTablero" method="post" class="mb-4">
+                <div class="form-group">
+                    <label asp-for="@Model.IdTablero">Tablero</label>
+                    <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control">
+                        <option value="">Seleccionar Tablero</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Seleccionar</button>
+            </form>
+
+            @foreach(var estado in Enum.GetValues(typeof(EstadoTarea)))
+            {
+                <div class="card mb-4">
+                    <h5 class="card-header">@estado</h5>
+                    <div class="card-body">
+                        @foreach(var tarea in Model.Tareas.Where(t => t.Estado == (EstadoTarea)estado))
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body" style="background-color: @tarea.Color;">
+                                    <h5 class="card-title">@tarea.Nombre</h5>
+                                    @if(@tarea.Color == "lightcoral")
+                                    {
+                                        <p class="card-text"><strong>Urgencia alta</strong>, presentar de inmediato la tarea</p>
+                                    } 
+                                    @if(@tarea.Color == "lightgreen")
+                                    {
+                                        <p class="card-text"><strong>Urgencia baja</strong>, hay mucho tiempo para presentar la tarea</p>
+                                    }
+                                    @if(@tarea.Color == "lightblue"){
+                                        <p class="card-text"><strong>Urgencia media</strong>, queda poco tiempo para presentar la tarea</p>
+                                    }
+                                    <p class="card-text">Descripción: @tarea.Descripcion</p>
+                                    <p class="card-text">Usuario Asignado: 
+                                        @{
+                                            var usuarioAsignado = Model.Usuarios.FirstOrDefault(x => x.Id == tarea.IdUsuarioAsignado);
+                                        }
+                                        @if(usuarioAsignado != null)
+                                        {
+                                            <strong>@usuarioAsignado.NombreDeUsuario </strong>
+                                        }
+                                        else
+                                        {
+                                            <strong><span> -- </span></strong>
+                                        }
+                                    </p>
+                                    <div class="btn-group" role="group">
+                                        <a asp-controller="Tarea" asp-action="UpdateTarea" asp-route-idTarea="@tarea.IdTarea" class="btn btn-success">Editar</a>
+                                        <a asp-controller="Tarea" asp-action="DeleteTarea" asp-route-idTarea="@tarea.IdTarea" onclick="return confirm('¿Estas seguro que quieres eliminar el elemento?')" class="btn btn-danger">Eliminar</a>
+                                        @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                                        {
+                                            <a asp-controller="Tarea" asp-action="AsignarUsuario" asp-route-idTarea="@tarea.IdTarea" class="btn btn-info">Asignar</a> 
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        <div class="task">
+            <div class="circle" style="background-color: lightcoral;"></div>
+            <p class="description"><strong>Urgencia Alta</strong> - Se debe entregar de inmediato la tarea</p>
+        </div>
+
+        <div class="task">
+            <div class="circle" style="background-color: lightgreen;"></div>
+            <p class="description"><strong>Urgencia Baja</strong> - Queda mucho tiempo para presentar la tarea</p>
+        </div>
+
+        <div class="task">
+            <div class="circle" style="background-color: lightblue;"></div>
+            <p class="description"><strong>Urgencia Media</strong> - Queda poco tiempo para presentar la tarea</p>
+        </div>
+        </div>
+    </div>
+</div>
+
+

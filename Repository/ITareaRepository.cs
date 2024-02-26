@@ -16,5 +16,6 @@ namespace TP10.Repository
         public void Delete(int idTarea);
         public void AsignarUsuarioATarea(int idUsuario, int idTarea);
         public List<Tarea> GetAllTareas();
+        public void UpdateId(int idUsuario);
     }
 }

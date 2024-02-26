@@ -4,43 +4,64 @@
 @using TP10.ViewModels
 @model AñadirTareaViewModel
 
-<form asp-controller="Tarea" asp-action="CreateTarea">
-    <div class="form-group">
-        <label asp-for="@Model.IdTablero">Tablero</label>
-        <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control">
-            <option value="">Seleccionar Tablero</option>
-        </select>
-        <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
-    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Crear Tarea</h6>
+                    <small><a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a></small>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Tarea" asp-action="CreateTarea" method="post">
+                        <div class="form-group">
+                            <label asp-for="@Model.IdTablero">Tablero</label>
+                            <select asp-for="@Model.IdTablero" asp-items="new SelectList(Model.Tableros, nameof(Tablero.IdTablero), nameof(Tablero.Nombre))" class="form-control">
+                                <option value="">Seleccionar Tablero</option>
+                            </select>
+                            <span asp-validation-for="@Model.IdTablero" class="text-danger"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Nombre">Nombre de la tarea</label>
-        <input asp-for="@Model.Nombre" class="form-control" required/>
-        <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
-    </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Nombre">Nombre de la tarea</label>
+                            <input asp-for="@Model.Nombre" class="form-control" required/>
+                            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Descripcion">Descripcion</label>
-        <input asp-for="@Model.Descripcion" class="form-control" />
-    </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Descripcion">Descripcion</label>
+                            <input asp-for="@Model.Descripcion" class="form-control" />
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Estado">Estado</label>
-        <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
-        <span asp-validation-for="@Model.Estado" class="text-danger"></span>
-    </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.Estado">Estado</label>
+                            <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control"></select>
+                            <span asp-validation-for="@Model.Estado" class="text-danger"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Color">Color</label>
-        <input asp-for="@Model.Color" class="form-control" />
-    </div>
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <select asp-for="@Model.Color" class="form-control">
+                                <option value="lightcoral">Prioridad Alta</option>
+                                <option value="lightgreen">Prioridad Baja</option>
+                                <option value="lightblue">Prioridad Media</option>
+                            </select>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.IdUsuarioAsignado">Usuario Asignado</label>
-        <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
-            <option value="">Seleccionar Usuario</option>
-        </select>
-    </div>
+                        @if(Context.Session.GetString("Rol") == Roles.Administrador.ToString())
+                        {
+                            <div class="form-group">
+                                <label asp-for="@Model.IdUsuarioAsignado">Usuario Asignado</label>
+                                <select asp-for="@Model.IdUsuarioAsignado" asp-items="new SelectList(Model.Usuarios, nameof(Usuario.Id), nameof(Usuario.NombreDeUsuario))" class="form-control">
+                                    <option value="">Seleccionar Usuario</option>
+                                </select>
+                            </div>
+                        }
 
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

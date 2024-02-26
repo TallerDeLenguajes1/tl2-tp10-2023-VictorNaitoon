@@ -16,11 +16,11 @@ namespace TP10.ViewModels
         [Required(ErrorMessage = "El nombre es requerido")]
         [Display(Name = "Nombre de tarea")]
         public string Nombre { get; set; }
+        public string Color { get; set; }
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "El estado es requerido")]
         [Display(Name = "Estado de tarea")]
         public EstadoTarea Estado { get; set; }
-        public string Color { get; set; }
         public int IdUsuarioAsignado { get; set; }
         public List<Usuario> Usuarios { get; set; } = new List<Usuario>();
         public List<Tablero> Tableros { get; set; } = new List<Tablero>();

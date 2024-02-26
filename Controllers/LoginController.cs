@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,7 +37,7 @@ namespace TP10.Controllers
             {
                 var usuarioLogueado = _repository.AutenticarUsuario(usuario.NombreDeUsuario, usuario.Contrasenia);
 
-                if(usuarioLogueado == null || !VerificarCredenciales(usuario, usuarioLogueado))
+                if(usuarioLogueado == null)
                 {
                     var loginVM = new LoginViewModel();
                     loginVM.MensajeDeError = "Usuario y/o contraseña incorrecto";
@@ -57,17 +58,18 @@ namespace TP10.Controllers
             }
         }
 
+        [HttpGet("Logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Login");
+        }
         public void loguearUsuario(Usuario usuario)
         {
             HttpContext.Session.SetString("Id", usuario.Id.ToString());
             HttpContext.Session.SetString("NombreDeUsuario", usuario.NombreDeUsuario);
             HttpContext.Session.SetString("Contrasenia", usuario.Contrasenia);
             HttpContext.Session.SetString("Rol", usuario.Rol.ToString());
-        }
-
-        private bool VerificarCredenciales(Usuario usuarioIngresado, Usuario usuarioAlmacenado)
-        {
-            return usuarioIngresado.NombreDeUsuario.ToLower() == usuarioAlmacenado.NombreDeUsuario.ToLower() && usuarioIngresado.Contrasenia == usuarioAlmacenado.Contrasenia;
         }
     }
 }

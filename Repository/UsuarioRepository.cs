@@ -26,9 +26,6 @@ namespace TP10.Repository
 
                 var command = new SQLiteCommand(query, conexion);
 
-                /*PARA NO TENER PROBLEMAS CON LAS LETRAS MAYUSCULAS O MINUSCULAS SE ME OCURRIO
-                PONER EL TOLOWER() PARA GUARDAR Y CUANDO MANDO PARA AUTENTIFICAR, DESPUES VER BIEN COMO
-                ES EL TEMA ESTE*/
                 command.Parameters.Add(new SQLiteParameter("@nombre_de_usuario", usuario.NombreDeUsuario));
                 command.Parameters.Add(new SQLiteParameter("@contrasenia", usuario.Contrasenia));
                 command.Parameters.Add(new SQLiteParameter("@rol", usuario.Rol));
@@ -135,16 +132,45 @@ namespace TP10.Repository
 
         public Usuario AutenticarUsuario(string nombre, string contrasenia)
         {
-            Usuario usuario = new Usuario();
+            Usuario usuario = null;
             using(SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
 
                 SQLiteCommand command = conexion.CreateCommand();
-                command.CommandText = "SELECT * FROM usuario WHERE nombre_de_usuario COLLATE NOCASE = @nombre OR contrasenia = @contrasenia";
+                command.CommandText = "SELECT * FROM usuario WHERE nombre_de_usuario COLLATE NOCASE = @nombre AND contrasenia = @contrasenia";
 
                 command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
                 command.Parameters.Add(new SQLiteParameter("@contrasenia", contrasenia));
+
+                using(SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if(reader.Read())
+                    {
+                        usuario = new Usuario();
+                        usuario.Id = Convert.ToInt32(reader["id_usuario"]);
+                        usuario.NombreDeUsuario = reader["nombre_de_usuario"].ToString();
+                        usuario.Contrasenia = reader["contrasenia"].ToString();
+                        usuario.Rol = (Roles)Convert.ToInt32(reader["rol"]);
+                    }
+                }
+
+                conexion.Close();
+            }
+            return usuario;
+        }
+
+        public Usuario ExisteNombre(string nombre)
+        {
+            Usuario usuario = new Usuario();
+
+            using(SQLiteConnection conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+
+                SQLiteCommand command = conexion.CreateCommand();
+                command.CommandText = $"SELECT * FROM usuario WHERE nombre_de_usuario COLLATE NOCASE = @nombre";
+                command.Parameters.Add(new SQLiteParameter("@nombre", nombre));
 
                 using(SQLiteDataReader reader = command.ExecuteReader())
                 {
